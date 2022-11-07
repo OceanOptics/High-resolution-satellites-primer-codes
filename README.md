@@ -7,7 +7,7 @@ High resolution remote sensing recipes
 
 ### Each general processing code in a separate folder (e.g. polymer, SeaDAS ...)
 
-# if the codes are already part of another github repository, we can either reference to it (e.g. getLandsatL2_SST) or clone and merge
+### if the codes are already part of another github repository, we can either reference to it (e.g. getLandsatL2_SST) or clone and merge
 
 ### getLandsatL2_SST:
 Simple code to extract sea surface temperature from Landsat 4, 5, 7, 8 and 9 collection 2 level 2 images using MATLAB: https://github.com/OceanOptics/getLandsatL2_SST
