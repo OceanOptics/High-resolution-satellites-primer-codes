@@ -1,9 +1,15 @@
 %-------------------------------------------------------------------------%
 %                                                                         %
-%  This code estimates SPM + uncentinty from Remote sensing Reflectance   %
+%  This code estimates SPM + uncentinty from Water Reflectance at multiple
+%   wavelenghts (bands) using the MW algorithm (Tavora et al., 2020)      %
+%
 %                                                                         %
 %                   --------------------------------                      %
-%   You need:                                                             %
+%   You need:
+%  1. Landsat 8 scene (USGS, level 2 collection 2)                        %
+%  2. the MW algorithm package 
+%  3. in-situ data 'in-situ_data_svaalbard.mat' available in the root folder
+
 % --                                                                      %
 % Juliana Tavora, 2019                                                    %
 %                                                                         %
@@ -14,10 +20,20 @@ close all
 clear all
 clc
 
+%-------------------------------------------------------------------------%
 
-%% using/finding data from measured data
+%set insitu data
+load('in-situ_data_svaalbard.mat')
+data = [Kronebreen; Tunabreen];
+
 
 %-------------------------------------------------------------------------%
+
+addpath '/pathTo/MW_algorithm/' %change directory
+
+
+% inputs necessary for MW algorithm 
+
 % gordon et al (1988)
 L = [0.0949,0.0794];
 Q_filter = 0.5;
@@ -26,29 +42,19 @@ Q_filter = 0.5;
 S         = 0.006:0.001:0.014;
 Y         = 0:0.1:1;
 ap443     = 0.01:0.01:0.06;
-ap750     = 0.013:0.001:0.015; %rotgers elber river
+ap750     = 0.013:0.001:0.015; 
 bbp700    = 0.002:0.001:0.021;
 
 SNR = [227; 201; 267];
 bandwidth = [37; 28; 85];
+wavelengths = [655 865 1609];
+
+%-------------------------------------------------------------------------%
 
 
-%% Extract the latitude, longitude, and temperature data
-
-% set this path to where you have saved the Level 2 file
-% The command 'pwd' in the commond window will list the current path if...
-% navigate to it in the current folder window on the left
-
-
-
-load('in-situ_data_svaalbard.mat')
-
-addpath '/Users/julianatavora/Documents/HighResol_primer/svalbard/MW_algorithm/'
-pathDir = '/Users/julianatavora/Documents/HighResol_primer/svalbard/usgs_l2c2/';
+pathDir = '/pathTo/svalbard_files/usgs_l2c2/'; %change directory to where usgs level2 collection 2 file is
 list_scenes = dir([pathDir 'L*']);
 
-wavelengths = [655 865 1609];
-data = [Kronebreen; Tunabreen];
 
 match_ups = [];
 for ii=1:length(list_scenes)
@@ -93,7 +99,7 @@ for ii=1:length(list_scenes)
         
         square_RW             = [reshape(RRS(3329:3620,2563:2855,1),[],1),...
                                  reshape(RRS(3329:3620,2563:2855,2),[],1),...
-                                 reshape(RRS(3329:3620,2563:2855,3),[],1)];
+                                 reshape(RRS(3329:3620,2563:2855,3),[],1)]; %reducing the size of scene to area of interest
        
          clear RRS U rrs RW_sel* IOP_matrix*
                       
@@ -122,7 +128,6 @@ for ii=1:length(list_scenes)
     %                        create table with data                           %
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
     
-    % TABELAO
     tabledata    = array2table([round(SPM_wm',2),round(err_wm',2)],...
         'VariableNames',{'SPM_mw','SPM_std'});
     date         = table(repmat(datetime(dt,'Format','HH:mm:ss'),size(x,1),1),...
@@ -132,4 +137,9 @@ for ii=1:length(list_scenes)
     
     clear data_select SPM_wm err_wm
 end
+
+%-------------------------------------------------------------------------%
+
+
+
 
