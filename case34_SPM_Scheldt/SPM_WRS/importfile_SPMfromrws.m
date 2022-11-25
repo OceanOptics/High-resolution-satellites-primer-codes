@@ -9,7 +9,7 @@ function data = importfile_SPMfromRWS(filename, dataLines)
 %  for dis-contiguous row intervals.
 %
 %  Example:
-%  Untitled = importfile("/Users/julianatavora/Documents/PhD/Paper2/SPM_fromRWS/20220214_015.txt", [2, Inf]);
+%  Untitled = importfile("/path/to/data/SPM_fromRWS/data.txt", [2, Inf]); %data.txt is data downloaded directly from Rijkwaterstaad (waterinfo) database
 %
 %  See also READTABLE.
 %
