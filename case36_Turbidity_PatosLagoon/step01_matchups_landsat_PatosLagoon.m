@@ -91,6 +91,10 @@ for i=28: size(list_scenes,1)
     lat = ncread(imageFile, 'lat');
     lon = ncread(imageFile, 'lon');
     
+    %---------------------------------------------------------------------%
+    % since earliest in-situ Turbidity data was collected in 2016, the only
+    % satellite/sensor to be sampled is either L8 or L9, hence: 
+    
     if str2num(B(2)) == 8
         %rhos are already corrected by acolite
         Turb_Nechad16_865 = ncread(imageFile, 'TUR_Nechad2016_865');  Turb_Nechad16_865(Turb_Nechad16_865 <0 ) = NaN;
