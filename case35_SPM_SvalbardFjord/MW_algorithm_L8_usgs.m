@@ -7,8 +7,9 @@
 %                   --------------------------------                      %
 %   You need:
 %  1. Landsat 8 scene (USGS, level 2 collection 2)                        %
-%  2. the MW algorithm package 
-%  3. in-situ data 'in-situ_data_svaalbard.mat' available in the root folder
+%  2. code 'getLandsatL2_RW.m'
+%  3. the MW algorithm package 
+%  4. in-situ data 'in-situ_data_svaalbard.mat' available in the root folder
 
 % --                                                                      %
 % Juliana Tavora, 2019                                                    %
@@ -114,14 +115,13 @@ for ii=1:length(list_scenes)
         SPM_wm_day1           = NaN(size(square_RW,1),1);
         err_day1              = NaN(size(square_RW,1),1);
         
-        tic
         for h = 1:size(square_RW,1)
             
             [SPM_wm_day1(h),err_day1(h)] = MW_algorithm(nm, NaN(1,3), rrs(h,:),...
                 U(h,:), IOP_matrix, a_sw, Q_filter, SNR, dim, SST);
         end
-        toc
-         SPM_alg = reshape(SPM_wm_day1,292,293);     SPM_alg_err = reshape(err_day1,292,293);   
+
+        SPM_alg = reshape(SPM_wm_day1,292,293);     SPM_alg_err = reshape(err_day1,292,293);   
     end
     
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
