@@ -1,7 +1,9 @@
 %------------------------------------------------------------------------ %
 %                                                                         %
-% MATLAB CODE TO READ SATELLITE SCENES (Sentinel 2A,B), FIND MATCHUPS     %
-% WITH FIELD SPM (RWS) FOR WESTERSCHELDE ESTUARY                          %                                                     %
+% MATLAB CODE TO READ SATELLITE SCENES (Sentinel 2A,B), sample SPM and    %
+% compare with in-situ data                                               %  
+%                                                                         %
+%       Here we plot information relative to step 02 and step 03          %
 %                                                                         %
 % THIS CODE REQUIRES:                                                     %
 %                                                                         %
