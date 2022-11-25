@@ -9,8 +9,10 @@
 % 1)Satellite Landsat (atmospherically corrected)                         %
 % 2)folder in-situ SPM data + funcions to import data                     %
 %   ** make sure that the downloaded in-situ data is in UTC or correct time
-%                 %
 %                                                                         %
+%                                                                         %
+% Outputs:
+% 1) table containing match-up turidity calulated from Nechad et al., 2009 algorithm 
 %                                                                         %
 % developed by:                                                           %
 % Juliana Tavora (j.tavora@utwente.nl)                                    %
@@ -181,3 +183,4 @@ end
 
 big_table_matchup(isnan(big_table_matchup.Turb_Nechad16_865_median),:) = [];
 
+save('Landsat_matchups.mat','big_table_matchup')
