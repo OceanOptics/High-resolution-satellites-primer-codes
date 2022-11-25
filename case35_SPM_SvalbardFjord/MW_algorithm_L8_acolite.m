@@ -1,9 +1,15 @@
 %-------------------------------------------------------------------------%
 %                                                                         %
-%  This code estimates SPM + uncentinty from Remote sensing Reflectance   %
+%  This code estimates SPM + uncentinty from Water Reflectance at multiple
+%   wavelenghts (bands) using the MW algorithm (Tavora et al., 2020)      %
+%
 %                                                                         %
 %                   --------------------------------                      %
-%   You need:                                                             %
+%   You need:
+%  1. Landsat 8 scene (acolite processed, level 2 collection 2)           %
+%  2. the MW algorithm package 
+%  3. in-situ data 'in-situ_data_svaalbard.mat' available in the root folder
+
 % --                                                                      %
 % Juliana Tavora, 2019                                                    %
 %                                                                         %
@@ -14,13 +20,20 @@ close all
 clear all
 clc
 
-addpath '/Users/julianatavora/Documents/HighResol_primer/svalbard/MW_algorithm/'
+%-------------------------------------------------------------------------%
 
+%set insitu data
 load('in-situ_data_svaalbard.mat')
+data = [Kronebreen; Tunabreen];
 
-%% using/finding data from measured data
 
 %-------------------------------------------------------------------------%
+
+addpath '/pathTo/MW_algorithm/' %change directory
+
+
+% inputs necessary for MW algorithm 
+
 % gordon et al (1988)
 L = [0.0949,0.0794];
 Q_filter = 0.5;
@@ -29,20 +42,18 @@ Q_filter = 0.5;
 S         = 0.006:0.001:0.014;
 Y         = 0:0.1:1;
 ap443     = 0.01:0.01:0.06;
-ap750     = 0.013:0.001:0.015; %rotgers elber river
+ap750     = 0.013:0.001:0.015; 
 bbp700    = 0.002:0.001:0.021;
 
 SNR = [227; 201; 267];
 bandwidth = [37; 28; 85];
+wavelengths = [655 865 1609];
 
 %-------------------------------------------------------------------------%
-% loads Rw, SPM and wavelength
+
 pathDir = '/Users/julianatavora/Documents/HighResol_primer/svalbard/acolite_l2c2/';
 list_scenes = dir([pathDir '*.nc']);
 
-
-wavelengths = [655 865 1609];
-data = [Kronebreen; Tunabreen]; clear kronebreen Tunabreen
 
 match_ups = [];
 for ii=1:length(list_scenes)
@@ -134,7 +145,6 @@ for ii=1:length(list_scenes)
     %                        create table with data                           %
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
     
-    % TABELAO
     tabledata    = array2table([round(SPM_wm',2),round(err_wm',2)],...
         'VariableNames',{'SPM_mw','SPM_std'});
     date         = table(repmat(datetime(sat_time,'Format','HH:mm:ss'),size(x,1),1),...
