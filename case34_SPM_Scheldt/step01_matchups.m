@@ -23,31 +23,20 @@ close all
 clear all
 clc
 
+cd '/Volumes/PHD_files/HighResol_primer/scheldt/'
+
 %-------------------------------------------------------------------------%
 %                        process in-situ SPM data                         %
 %-------------------------------------------------------------------------%
 
-cd 'scheldt/SPM_RWS/'; %set folder path to data
-files = dir('2022*.txt'); 
+cd '/Volumes/PHD_files/HighResol_primer/scheldt/SPM_RWS/';
+files = dir('2022*.txt');
 
 fileName = char({files(1).name});
 [SPMfield,~,~,~,~] = process_fieldSPM(fileName);
 
 weschelde_station = string(unique(SPMfield.Stations));
 
-ll=1;
-for i=1:length(weschelde_station)
-    
-    [st,~]=find(SPMfield.Stations==weschelde_station{(i)});
-    SPMdata_st = SPMfield(st,:);
-    SPMdata1 = removevars(SPMdata_st,'Stations');
-    
-    SPM_daily{:,ll} = SPMdata1;
-    Lat_daily{:,ll} = SPMdata1.Lat;
-    Lon_daily{:,ll} = SPMdata1.Lon;
-    
-    ll=ll+1;
-end
 
 %-------------------------------------------------------------------------%
 %                      process satellite SPM data                         %
@@ -87,26 +76,24 @@ for i=1:length(list_scenes)
     
     
     for nn = 1:length(weschelde_station)
-        
-        SPM_field = SPM_daily{:,nn};
-        
-        [x,l] = find( (year(satdate(:,1))  == year(SPM_field.datetime)) & ...
-                      (month(satdate(:,1)) == month(SPM_field.datetime)) & ...
-                      (day(satdate(:,1))   == day(SPM_field.datetime)));
+                
+        [x,l] = find( (year(satdate(:,1))  == year(SPMfield.datetime)) & ...
+                      (month(satdate(:,1)) == month(SPMfield.datetime)) & ...
+                      (day(satdate(:,1))   == day(SPMfield.datetime)));
         
         
-        field_time      = SPM_field.time(x); field_time.Format = 'HH:mm:ss';
+        field_time      = SPMfield.time(x); field_time.Format = 'HH:mm:ss';
         field_time.Hour = field_time.Hour - 1; %correct time difference (CET/MET to UTC)
         
         time_dif = abs((sat_time.Hour.*60 + sat_time.Minute) - ...
                      (field_time.Hour.*60 + field_time.Minute));
         
         
-        if any(time_dif <= 30) %time interval 
-            dataSPM = SPM_field.SPM(x,:);      dataSPM(time_dif>30)=[];
-            LAT     = SPM_field.Lat(x,:);      LAT(time_dif>30)=[];
-            LON     = SPM_field.Lon(x,:);      LON(time_dif>30)=[];
-            dateSPM = SPM_field.datetime(x,:); dateSPM(time_dif>30)=[];
+        if any(time_dif <= 30) %time interval
+            dataSPM = SPMfield.SPM(x,:);      dataSPM(time_dif>30)=[];
+            LAT     = SPMfield.Lat(x,:);      LAT(time_dif>30)=[];
+            LON     = SPMfield.Lon(x,:);      LON(time_dif>30)=[];
+            dateSPM = SPMfield.datetime(x,:); dateSPM(time_dif>30)=[];
                                                field_time(time_dif>30)=[];
         else LAT = NaN;
         end
@@ -186,5 +173,5 @@ xlim([0 100])
 ylim([0 100])
 xlabel('SPM in-situ [gm^{-3}]','FontSize',12)
 ylabel('SPM derived [gm^{-3}]','FontSize',12)
-set(gca,'color',[1 1 1]); %sets background color
+set(gca,'color',[1 1 1]); %sets grey background
 box on 
