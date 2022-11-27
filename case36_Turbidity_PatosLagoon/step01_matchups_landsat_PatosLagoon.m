@@ -1,25 +1,25 @@
-%------------------------------------------------------------------------ %
-%                                                                         %
-% MATLAB CODE TO READ SATELLITE SCENES (L5, L7, L8 and L9), FIND MATCHUPS %
-% WITH FIELD SPM (from SIMCOSTA) FOR Patos Lagoon ESTUARY                 %                                                 
-%                                                                         %
-% THIS CODE REQUIRES:                                                     %
-%                                                                         %
-% Inputs:                                                                 %
-% 1)Satellite Landsat (atmospherically corrected)                         %
-% 2)folder in-situ SPM data + funcions to import data                     %
-%   ** make sure that the downloaded in-situ data is in UTC or correct time
-%                                                                         %
-%                                                                         %
+%-------------------------------------------------------------------------- %
+%                                                                           %
+% MATLAB CODE TO READ SATELLITE SCENES (L5, L7, L8 and L9), FIND MATCHUPS   %
+% WITH FIELD SPM (from SIMCOSTA) FOR Patos Lagoon ESTUARY                   %                                                 
+%                                                                           %
+% THIS CODE REQUIRES:                                                       %
+%                                                                           %
+% Inputs:                                                                   %
+% 1)Satellite Landsat *L2W.nc file (atmospherically corrected using Acolite)%
+% 2)folder in-situ SPM data + funcions to import data                       %
+%   ** make sure that the downloaded in-situ data is in UTC or correct time %
+%                                                                           %
+%                                                                           %
 % Outputs:
 % 1) table containing match-up turidity calulated from Nechad et al., 2009 algorithm 
-%                                                                         %
-% developed by:                                                           %
-% Juliana Tavora (j.tavora@utwente.nl)                                    %
-% University of Twente                                                    %
-% version November 2022                                                   %
-%                                                                         %
-%------------------------------------------------------------------------ %
+%                                                                           %
+% developed by:                                                             %
+% Juliana Tavora (j.tavora@utwente.nl)                                      %
+% University of Twente                                                      %
+% version November 2022                                                     %
+%                                                                           %
+%-------------------------------------------------------------------------- %
 
 clear all
 close all
@@ -112,7 +112,7 @@ for i=28: size(list_scenes,1)
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
     %                  find match-up data and collect data                    %
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-    LON = [-52.10556,-52.0980333,-52.0954333];
+    LON = [-52.10556,-52.0980333,-52.0954333]; 
     LAT = [-32.02349,-32.1345833,-32.2454167];
     
     for ii=1:length(LAT)
