@@ -1,12 +1,21 @@
-# Set of scripts and data to compare and validate Turbidity from Landsat 5, 7, 8 and 9 scenes against in-situ Turbidity data.
+## Set of scripts and data to compare and validate Turbidity from Landsat 5, 7, 8 and 9 scenes against in-situ Turbidity data.
 
 
-This module provides a package of Matlab functions. This is likely not the fastest implementation possible however it is easy to use.
+This module provides a package of Matlab functions to sample Turbidity data from Landsat scenes processed with ACOLITE . 
+The codes here are likely not the fastest implementation possible however are easy to use.
 
-# Setting the input data 
+###### Step01*:
+finds matchups between in-situ sampled Turbidity and Landsat whithin 30min between satellite overpass and sampling. 
+
+###### Step02*:
+samples Turbidity derived from L5, L7, L8, and L9 at one specific station (buoy RS4)
+
+###### plot_figure*:
+plots all gathered data from previous functions. 
 
 
 
-# Questions and Suggestions
 
+
+## Questions and Suggestions
 For questions regarding the script implementation or to suggest changes to improve its functionality, please contact Juliana Tavora at j.tavora@utwente.nl
