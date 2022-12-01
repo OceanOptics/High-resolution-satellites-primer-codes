@@ -1,4 +1,4 @@
-## Set of scripts and data to compare and validate Turbidity from Landsat 5, 7, 8 and 9 scenes against in-situ Turbidity data.
+## Case 3.6 for Turbidity in Patos Lagoon: compare and validate Turbidity from Landsat-5, Landsat-7, Landsat-8 and Landsat-9
 
 
 This module provides a package of Matlab functions to sample Turbidity data from Landsat scenes processed with ACOLITE . 
