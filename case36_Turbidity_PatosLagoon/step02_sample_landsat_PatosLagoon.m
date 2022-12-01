@@ -58,144 +58,134 @@ for i =1:x
     end
     Turb.Properties.VariableNames{2} = 'datetime'; clear Turb_date
     
-    Turb_boias = [Turb_boias; Turb]; clear Turb
+    Turb_buoy4 = [Turb_buoy4; Turb]; clear Turb
 end
-Turb_boias.Properties.VariableNames{3} = 'boias';
-Turb_boias(isnan(Turb_boias.Avg_Turb),:)=[];
+Turb_buoy4.Properties.VariableNames{3} = 'boias';
+Turb_buoy4(isnan(Turb_buoy4.Avg_Turb),:)=[];
 
-for i = 1:x
-  exact_match_mask = strcmp(Turb_boias.boias, char(boias{i}));
-    Turb_boia_data{:,i} = Turb_boias(exact_match_mask,:);
-end
+save('Turb_Buoy4.mat','Turb_buoy4')
 
 %-------------------------------------------------------------------------%
 %                    process satellite turbidity data                     %
 %-------------------------------------------------------------------------%
 
-
-
-% directory structure pointing to where images are located
+%  directory structure pointing to where images are located
 mainDir = '/Volumes/JTavora_ITC/PatosLagoon/';
-
 list_scenes = dir([mainDir 'L*_L2W.nc']);  % get list of all .nc files
-x = size(list_scenes);
-numFiles = x(1); % get number of files found
 
 
-big_table_timeseries = [];
+% lat/ lon of insitu station relativo de Buoy RS4
+LAT = -32.2454167;	
+LON = -52.0954333;	
 
-for i=1: size(list_scenes,1)
+big_table_Landsat_RS4 = [];
+
+for i=size(list_scenes,1)
     
     x2 = {list_scenes(i).name};
     B = convertStringsToChars(string(x2)');
     
-    satdate = datetime(str2double(B(8:11)),str2double(B(13:14)),str2double(B(16:17)), ...
-        'Format','dd-MMM-yyyy')
-    
-    %read in ALL files in the directory, retrieving the data
-    imageFile = [pathDir char(x2)];
-    
-    sat_time = ncreadatt(imageFile,'/','isodate');
-    sat_time = datetime(sat_time(12:19), 'Format', 'HH:mm:ss');
-    
-    %latitude/long from the image
-    lat = ncread(imageFile, 'lat');
-    lon = ncread(imageFile, 'lon');
-    
-    %---------------------------------------------------------------------%
-    % since earliest in-situ Turbidity data was collected in 2016, the only
-    % satellite/sensor to be sampled is either L8 or L9, hence: 
-    
-    if str2num(B(2)) == 8
-        %rhos are already corrected by acolite
-        Turb_Nechad16_865 = ncread(imageFile, 'TUR_Nechad2016_865');  Turb_Nechad16_865(Turb_Nechad16_865 <0 ) = NaN;
+    if B(2) == num2str(5)
+        day     = str2double(B(15:16));
+        month   = str2double(B(12:13));
+        year    = str2double(B(7:10));
     else
-        %rhos are already corrected by acolite
-        Turb_Nechad16_865 = ncread(imageFile, 'TUR_Nechad2016_865');  Turb_Nechad16_865(Turb_Nechad16_865 <0 ) = NaN;
+        day     = str2double(B(16:17));
+        month   = str2double(B(13:14));
+        year    = str2double(B(8:11));
     end
     
+    
+    satdate = datetime(year,month,day, 'Format','dd.MM.yyyy');
 
-    Turb_Nechad16_865 = Turb_Nechad16_865';    
-    lat =  lat';
-    lon = lon';
- 
+    % read in ALL files in the directory, retrieving the data
+    imageFile = [mainDir char(x2)];   
     
-    %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-    %                  find match-up data and collect data                    %
-    %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-    LON = -52.0954333;
-    LAT = -32.2454167;
+    %latitude\long from the image
+    lat = ncread(imageFile, 'lat'); lat = lat';
+    lon = ncread(imageFile, 'lon'); lon = lon';
     
-    for ii=1:length(LAT)
-        
-        data = Turb_boia_data{:,ii};
-        [x,l] = find( (year(satdate(:,1)) == year(data.datetime)) & ...
-            (month(satdate(:,1)) == month(data.datetime)) & ...
-            (day(satdate(:,1)) == day(data.datetime)));
-        
-        
-        field_time = data.datetime(x); field_time.Format = 'HH:mm:ss';
-        
-        time_dif = abs((sat_time.Hour.*60 + sat_time.Minute) - ...
-            (field_time.Hour.*60 + field_time.Minute));
-        
-        [~,r_min] = (nanmin(time_dif));
-        
-        time_dif=time_dif(r_min); x = x(r_min);
-        
-        clear nodata
-        
-        if any(time_dif <= 30)
-            dataTurb = data(x,:);
-            field_time=field_time(r_min);
-            dateT = dataTurb.datetime;
-        else
-            nodata = 1; %LAT(ii) = NaN;
-        end
-        
-        % find 'address' of lat/lon from in-situ data
-        if exist('nodata','var') ==0 %&& any(x>0)
-            
-            % find lat/lon on the scene
-            minDist = [abs(lon - LON(ii)) + abs(lat - LAT(ii))];
-            [pLat, pLon] = find(minDist == min(abs(minDist(:))));
-            
-            % set sample box size (box size here = 5) as array of begin/end points for box
-            lon1 = pLon - 2; lon2 = pLon + 2;
-            lat1 = pLat - 2; lat2 = pLat + 2;
-            
-            if  ~isnan(pLat)
-                Turb_Nechad16_865_box_median = squeeze(nanmedian(Turb_Nechad16_865(lat1:lat2,lon1:lon2),[1 2]))';
-                Turb_Nechad16_865_box_std    = squeeze(std(Turb_Nechad16_865(lat1:lat2,lon1:lon2),0,'all','omitnan'))';
-                
-                lat_box_median = squeeze(nanmedian(lat(lat1:lat2,lon1:lon2),[1 2]))';
-                lon_box_median = squeeze(nanmedian(lon(lat1:lat2,lon1:lon2),[1 2]))';
-            end
-            
-            
-            %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-            %                        create table with data                           %
-            %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-            
-            tabledata    = array2table([Turb_Nechad16_865_box_median, Turb_Nechad16_865_box_std, ...
-                round(lon_box_median',3),round(lat_box_median',3)],...
-                'VariableNames',{'Turb_Nechad16_865_median','Turb_Nechad16_865_std',...
-                'lon_sample','lat_sample'});
-            latlondata    = array2table([round(LAT(ii),3), round(LON(ii),3)],'VariableNames',...
-                {'fieldLAT','fieldLON'});
-            date          = table(datetime(datestr(dateT),'Format','dd.MM.yyyy'),...
-                datetime(sat_time,'Format','HH:mm:ss'),...
-                datetime(field_time,'Format','HH:mm:ss'),...
-                'VariableNames',{'dd.mm.yyyy','sat_HH.mm.ss_UTC',...
-                'field_HH.mm.ss_UTC'});
-            
-            big_table_timeseries = [big_table_timeseries; date, dataTurb,tabledata];
-            
-            clear nodata x 
-        end
+    %NIR bands of landsat sensors differ
+    if     B(2) == num2str(5)
+                Turb = ncread(imageFile,'TUR_Nechad2009_839');  Turb = Turb'; Turb(Turb <=0) = NaN;
+    elseif B(2) == num2str(7)
+                Turb = ncread(imageFile,'TUR_Nechad2009_835');  Turb = Turb'; Turb(Turb <=0) = NaN;
+    elseif B(2) == num2str(8) | B(2) == num2str(9)
+                Turb = ncread(imageFile,'TUR_Nechad2009_865');  Turb = Turb'; Turb(Turb <=0) = NaN;      
     end
+    
+    flag =  ncread(imageFile, 'l2_flags');  flag = double(flag); flag(flag >0) = NaN; flag(flag <1) = 1;
+    
+    Turb = Turb.*flag';
+    
+    
+    minDist = [abs(lon - LON) + abs(lat - LAT)];
+    [pLat, pLon] = find(minDist == min(abs(minDist(:))));
+    
+    %x size as array of begin\end points for box
+    lon1 = pLon - 1;lon2 = pLon + 1;
+    lat1 = pLat - 1;lat2 = pLat + 1;
+    
+    
+    if  ~isnan(pLat)
+        Turb_NIRsample  = Turb(lat1:lat2,lon1:lon2);   % get the sample box
+        latsample       = lat(lat1:lat2,lon1:lon2);
+        lonsample       = lon(lat1:lat2,lon1:lon2);
+        
+        Turb_NIR_box_mean = squeeze(nanmean(Turb_NIRsample,[1 2]))';
+        lat_box_mean      = squeeze(nanmean(latsample,[1 2]))';
+        lon_box_mean      = squeeze(nanmean(lonsample,[1 2]))';
+        
+        Turb_red_box_std = std((squeeze(std(Turb_redsample,1,'omitnan'))),1,'omitnan');
+        lat_box_std      = std((squeeze(std(latsample,1,'omitnan'))),1,'omitnan');
+        lon_box_std      = std((squeeze(std(lonsample,1,'omitnan'))),1,'omitnan');
+        
+        % TABELAO
+        
+        tabledata    = array2table([round(Turb_NIR_box_mean',2), round(Turb_NIR_box_std',2),...
+                                    round(lon_box_mean',3), round(lat_box_mean',3)], ...
+                                    'VariableNames',{'Turb_NIR','Turb_NIR_std','lon_sample','lat_sample'});
+        date         = datestr(satdate);
+        date         = table(datetime(date,'Format','dd.MM.yyyy'),'VariableNames',{'dd.mm.yyyy'});
+        sat_scene    = array2table(string(x2), 'VariableNames',{'Scene'});
+        big_table_Landsat_RS4 = [big_table_Landsat_RS4; date, sat_scene,tabledata];
+    end
+
+disp(i)
+
 end
 
-big_table_timeseries(isnan(big_table_timeseries.Turb_Nechad16_865_median),:) = [];
+big_table_Landsat_RS4(isnan(big_table_Landsat_RS4.Turb_nir),:) =[];
+save('Turb_L5L7L8L9_histogram.mat','big_table_Landsat_RS4')
 
-save('Landsat_RS4_timeseries.mat','big_table_timeseries')
+scenes = char(big_table_Landsat_RS4.Scene); 
+scenes = string(scenes(:,1:2));
+
+figure(1);
+
+subaxis(2,1,1, 'Spacing', 0.01,'SpacingHoriz',0.01,'Padding', 0, 'Margin', 0.1);
+
+%Landsat 5
+findst= ismember(scenes,'L5');
+data = big_table_Landsat_RS4(findst,:);
+l5 = histogram(log10(data.Turb_red),12,'Normalization','probability','FaceColor','k');
+edge = l5.BinEdges;
+hold on 
+set(gca,'FontSize',12)
+
+findst= ismember(scenes,'L7');
+data = big_table_Landsat_RS4(findst,:);
+l7 = histogram(log10(data.Turb_red),edge,'Normalization','probability','FaceColor',[0.47,0.67,0.19]);
+hold on
+set(gca,'FontSize',12)
+
+findst= ismember(scenes,'L8');
+data = big_table_Landsat_RS4(findst,:);
+l8 = histogram(log10(data.Turb_red),edge,'Normalization','probability','FaceColor','w');
+hold on
+set(gca,'FontSize',12)
+
+ylim([0 0.4])
+
+
+
