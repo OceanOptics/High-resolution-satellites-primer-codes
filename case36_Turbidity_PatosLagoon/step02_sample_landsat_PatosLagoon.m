@@ -7,15 +7,17 @@
 % THIS CODE REQUIRES:                                                     %
 %                                                                         %
 % Inputs:                                                                 %
-% 1)'Landsat_matchups.mat' file                                           %
-% 2)'Landsat_RS4_timeseries.mat' file                                     %
-% 3) L5 scenes (L5_TM_1985_08_17_12_48_44_221082_L2W.nc)                  %
-% 4) L7 scenes (L7_ETM_2002_09_09_13_07_03_221082_L2W.nc)                 %
-% 5) L8 scenes (L8_OLI_2014_01_21_13_20_15_221082_L1R.nc)                 %
-% 6) L9 scenes (L9_OLI_2022_06_12_13_18_41_221082_L2W.nc)                 %
-% 7) type II regression function (lsqbisec.m) from MBARI                  %
-% 8) m_map package                                                        %
-%                                                                         %
+% 1) folder with in-situ Turbidity data and import file function          %
+% 2) L5 scenes                                                            %
+% 3) L7 scenes                                                            %
+% 4) L8 scenes                                                            %
+% 5) L9 scenes                                                            %
+%  
+% Outputs:
+% 1) .mat file with all Buoy RS4 data
+% 2) .mat file with turbidity calculated from all L5, L7, L8, L9 scenes
+%
+%
 %                                                                         %
 % developed by:                                                           %
 % Juliana Tavora (j.tavora@utwente.nl)                                    %
@@ -157,35 +159,5 @@ end
 
 big_table_Landsat_RS4(isnan(big_table_Landsat_RS4.Turb_nir),:) =[];
 save('Turb_L5L7L8L9_histogram.mat','big_table_Landsat_RS4')
-
-scenes = char(big_table_Landsat_RS4.Scene); 
-scenes = string(scenes(:,1:2));
-
-figure(1);
-
-subaxis(2,1,1, 'Spacing', 0.01,'SpacingHoriz',0.01,'Padding', 0, 'Margin', 0.1);
-
-%Landsat 5
-findst= ismember(scenes,'L5');
-data = big_table_Landsat_RS4(findst,:);
-l5 = histogram(log10(data.Turb_red),12,'Normalization','probability','FaceColor','k');
-edge = l5.BinEdges;
-hold on 
-set(gca,'FontSize',12)
-
-findst= ismember(scenes,'L7');
-data = big_table_Landsat_RS4(findst,:);
-l7 = histogram(log10(data.Turb_red),edge,'Normalization','probability','FaceColor',[0.47,0.67,0.19]);
-hold on
-set(gca,'FontSize',12)
-
-findst= ismember(scenes,'L8');
-data = big_table_Landsat_RS4(findst,:);
-l8 = histogram(log10(data.Turb_red),edge,'Normalization','probability','FaceColor','w');
-hold on
-set(gca,'FontSize',12)
-
-ylim([0 0.4])
-
 
 
