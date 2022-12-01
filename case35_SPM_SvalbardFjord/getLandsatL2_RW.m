@@ -8,20 +8,20 @@ function [dt, lat, lon, RW_stack, fmask] = getLandsatL2_RW(pathfolder, retrieve_
 % INPUT:
 %   - pathfolder: Landsat-8 folder path <1xM char>
 % Optional input:
-%   - retrieve_land: <boolean> retrieve land, samll lake and river temperature; default = false
+%   - retrieve_land: <boolean> retrieve land; default = false
 %   - prc_lim: <1x2 double> percentils to remove (%); default = [2.5 99]
 %
 % OUTPUT:
 %   - dt: <1x1 datetime> satellite over pass date and time
 %   - lat: <NxM double> matrix of latitudes
 %   - lon: <NxM double> matrix of longitudes
-%   - RW_stack: <NxM double> matrix of surface temperature
+%   - RW_stack: <NxM double> matrix of RW
 %   - fmask: <NxM double> matrix of masks generated from fmask
 %
 % examples:
-%    - [dt, lat, lon, temperature, fmask] = getLandsatL2_SST(pathfolder)
-%    - [dt, lat, lon, temperature, fmask] = getLandsatL2_SST(pathfolder, true)
-%    - [dt, lat, lon, temperature, fmask] = getLandsatL2_SST(pathfolder, false, [5 97.5])
+%    - [dt, lat, lon, temperature, fmask] = getLandsatL2_RW(pathfolder)
+%    - [dt, lat, lon, temperature, fmask] = getLandsatL2_RW(pathfolder, true)
+%    - [dt, lat, lon, temperature, fmask] = getLandsatL2_RW(pathfolder, false, [5 97.5])
 %%
 if nargin < 1
   error('Not enough input argument')
