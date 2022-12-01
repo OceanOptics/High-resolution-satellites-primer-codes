@@ -7,11 +7,14 @@
 %                                                                         %
 % Inputs:                                                                 %
 % 1)'Landsat_matchups.mat' file                                           %
-% 2)'Landsat_RS4_timeseries.mat' file                                     %
+% 2)'Turb_Buoy4.mat'
+% 3)'Turb_L5L7L8L9_histogram.mat')                                        %
 % 3) L5 scenes (L5_TM_1985_08_17_12_48_44_221082_L2W.nc)                  %
 % 4) L7 scenes (L7_ETM_2002_09_09_13_07_03_221082_L2W.nc)                 %
 % 5) L8 scenes (L8_OLI_2014_01_21_13_20_15_221082_L1R.nc)                 %
 % 6) L9 scenes (L5_TM_1985_08_17_12_48_44_221082_L2W.nc)                  %
+% 7) m_map package to plot maps
+% 8) lsqbisec.m function from MBARI for type 2 regression
 %                                                                         %
 %                                                                         %
 % developed by:                                                           %
@@ -114,22 +117,22 @@ set(gca,'color',[1 1 1]); %sets grey background
 legend([oneone reg dataplot(1)],{'1:1','y = 0.79x + 0.31 (r = 0.45, p = 0.0002, n = 31)'},'EdgeColor','none','Color','none','Location','eastoutside','FontSize',12)% box on
 
 %-------------------------------------------------------------------------%
-% step 2 - determine histogram of distribution 
+% step 2 - determine histogram of distribution for regionally calibrated satellite-derived Turb
 
-load('Landsat_RS4_timeseries.mat')
-
+load('Turb_Buoy4.mat')
+load('Turb_L5L7L8L9_histogram.mat')
 
 % plot histogram
 
 figure(1)
 subaxis(5,5,[3:4 7:8],'Spacing',0.01,'MR',0.1);
 
-field = histogram(log10(Turb_boias_RS4.Avg_Turb),50,'Normalization','probability','FaceColor','k');
+field = histogram(log10(Turb_buoy4.Avg_Turb),50,'Normalization','probability','FaceColor','k');
 hold on
 set(gca,'FontSize',12)
 
 edge = field.BinEdges;
-sat = histogram(log10(0.0993.*(big_table_L5789_RS4.SPM_red).^(1.354)),edge,'Normalization','probability','FaceColor',[0.47,0.67,0.19]);
+sat = histogram(log10(0.0993.*(big_table_Landsat_RS4.Turb_NIR_box_mean).^(1.354)),edge,'Normalization','probability','FaceColor',[0.47,0.67,0.19]);
 hold on
 set(gca,'FontSize',12)
 ylim([0 0.1])
