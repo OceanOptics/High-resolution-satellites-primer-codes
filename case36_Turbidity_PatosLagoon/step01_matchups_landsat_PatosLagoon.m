@@ -9,7 +9,7 @@
 % 1)Satellite Landsat *L2W.nc file (atmospherically corrected using Acolite)%
 % 2)folder in-situ Turbidity data + funcions to import data                 %
 %   ** make sure that the downloaded in-situ data is in UTC or correct time %
-%   ** you can use MATLABs 'Import Data' optin the Menu bar                 %
+%   ** import function created with MATLABs 'Import Data' optin the Menu bar%
 %                                                                           %
 %                                                                           %
 % Outputs:
@@ -26,7 +26,43 @@ clear all
 close all
 clc
 
-cd 'X:\LP_Processadas\L8\'
+%-------------------------------------------------------------------------%
+%                     process in-situ Turibidity data                     %
+%-------------------------------------------------------------------------%
+
+cd '/Volumes/PHD_files/HighResol_primer/LP/Turbidity_SIMCOSTA/'%set directory where in-situ Turbidity and import function are
+
+list_files = dir(['SIMCOSTA*.csv']);  % get list of all .csv turbidity files in directory
+x = size(list_files);
+
+
+boias = {"RS1","RS2","RS4"};
+Turb_boias = [];
+for i =1:x
+    % boia RS1
+    Turb = import_T_SIMCOSTA(list_files(i).name); %RS1=30946 %RS2=43986 %RS4= 27283
+    Turb_date = datetime([Turb.YEAR Turb.MONTH Turb.DAY Turb.HOUR Turb.MINUTE Turb.SECOND]);
+    Turb_date = array2table(Turb_date);
+    Turb(:,8) = Turb_date;
+    Turb(:,1:6) =[];
+    
+    a = convertStringsToChars(boias{i}); 
+    if a(3)==list_files(i).name(13)
+        Turb(:,3) = array2table(repmat(boias{i},height(Turb),1));
+    end
+    Turb.Properties.VariableNames{2} = 'datetime'; clear Turb_date
+    
+    Turb_boias = [Turb_boias; Turb]; clear Turb
+end
+Turb_boias.Properties.VariableNames{3} = 'boias';
+Turb_boias(isnan(Turb_boias.Avg_Turb),:)=[];
+
+for i = 1:x
+  exact_match_mask = strcmp(Turb_boias.boias, char(boias{i}));
+    Turb_boia_data{:,i} = Turb_boias(exact_match_mask,:);
+end
+
+
 
 
 %-------------------------------------------------------------------------%
