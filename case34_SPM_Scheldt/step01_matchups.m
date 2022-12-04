@@ -30,7 +30,7 @@ cd '/Volumes/PHD_files/HighResol_primer/scheldt/'
 %-------------------------------------------------------------------------%
 
 cd '/Volumes/PHD_files/HighResol_primer/scheldt/SPM_RWS/';
-files = dir('2022*.txt');
+files = dir('*.txt');
 
 fileName = char({files(1).name});
 [SPMfield,~,~,~,~] = process_fieldSPM(fileName);
