@@ -1,13 +1,9 @@
-# Primer-codes
-High resolution remote sensing recipes
+# High resolution remote sensing recipes 
 
-### ADD ALL CODES DESCRIPTION HERE
+### Here you will find recipes organized in separate folders and further described in referene: 
 
-### Each case study in a separate folder including a subfolder with data
+Recipes for the derivation of water quality parameters using the high spatial resolution data from sensors on board Sentinel-2A, 2B and Landsat-5,7,8,9 satellite, in review (2022)
 
-### Each general processing code in a separate folder (e.g. polymer, SeaDAS ...)
-
-### if the codes are already part of another github repository, we can either reference to it (e.g. getLandsatL2_SST) or clone and merge
 
 ### getLandsatL2_SST:
 Simple code to extract sea surface temperature from Landsat 4, 5, 7, 8 and 9 collection 2 level 2 images using MATLAB: https://github.com/OceanOptics/getLandsatL2_SST
