@@ -22,10 +22,10 @@ radiometric_insitu_interp_Ed = interp1(nm_insitu,radiometric_insitu_Ed,nm_insitu
 
 % spectral response function of satellite sensor
 
-BNDnm_insitu_interSNR_srf  = load(SRF_centralband);
+central_band_SRF           = load(SRF_centralband);
 SRF0                       = load(SRF_curve);
 
-central_band              = round(BNDnm_insitu_interSNR_srf(:,1)); clear BNDnm_insitu_interSNR_srf SRF_center SRF_file
+central_band              = round(central_band_SRF(:,1)); clear central_band_SRF SRF_center SRF_file
 [nn,~,SRF0]               = swapDim(SRF0);
 nm_SRF                    = SRF0(:,1);
 
@@ -70,7 +70,7 @@ for i=1:nr_bnds_SRF
     end
 end
 
-Rrs_conv = Lw./Ed; 
+Rrs_conv = radiometric_insitu_conv_Lw./radiometric_insitu_conv_Ed; 
 
 
 end
