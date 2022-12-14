@@ -1,6 +1,6 @@
 # High resolution remote sensing recipes 
 
-### Here you will find recipes organized in separate folders and further described in referene: 
+### Here you will find recipes organized in separate folders and further described in reference: 
 
 Recipes for the derivation of water quality parameters using the high spatial resolution data from sensors on board Sentinel-2A, 2B and Landsat-5,7,8,9 satellite, in review (2022)
 
