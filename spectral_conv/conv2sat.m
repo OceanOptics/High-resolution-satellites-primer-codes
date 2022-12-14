@@ -1,4 +1,4 @@
-function [Rrs_conv, central_band] = conv2sat(SRF_centralband,SRF_curve,Lw, Ed)
+function [Rrs_conv, central_band] = conv2sat(central_band_SRF ,SRF_curve,Lw, Ed)
 
 %% prepare in-situ radiometric data
 
@@ -22,8 +22,7 @@ radiometric_insitu_interp_Ed = interp1(nm_insitu,radiometric_insitu_Ed,nm_insitu
 
 % spectral response function of satellite sensor
 
-central_band_SRF           = load(SRF_centralband);
-SRF0                       = load(SRF_curve);
+SRF0                      = load(SRF_curve);
 
 central_band              = round(central_band_SRF(:,1)); clear central_band_SRF SRF_center SRF_file
 [nn,~,SRF0]               = swapDim(SRF0);
