@@ -10,7 +10,7 @@ function Turb = import_T_SIMCOSTA(filename, dataLines)
 %  scalar integers for dis-contiguous row intervals.
 %
 %  Example:
-%  SIMCOSTARS1OCEAN2016031120220605 = importfile("/Users/julianatavora/Documents/PhD/Chapters/Paper3_PL_landsat/datasets/Turbidity_SIMCOSTA/SIMCOSTA_RS-1_OCEAN_2016-03-11_2022-06-05.csv", [30, Inf]);
+%  Turbidity = importfile("/Turbidity_SIMCOSTA/SIMCOSTA_RS-1_OCEAN_2016-03-11_2022-06-05.csv", [30, Inf]);
 %
 %  See also READTABLE.
 %
