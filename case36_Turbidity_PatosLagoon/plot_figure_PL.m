@@ -63,7 +63,7 @@ symb={'o','>', '<', 's'};
 
 figure(1)
 subaxis(5,5,[1:2 5:6],'Spacing',0.01,'MR',0.1);
-addpath /Users/julianatavora/Documents/PhD
+
 for i=[1,3]%:length(stations)
     
     idx = ismember(big_table_matchup_l8l9.boias,stations(i));
@@ -149,7 +149,7 @@ ylabel('Relative frequency','FontSize',12)
 %-------------------------------------------------------------------------%
 % step 3 - plot examples of (regionally calibrated) turbidity maps from each landsat sensor 
 
-pathDir = '/Users/julianatavora/Documents/HighResol_primer/';
+pathDir = '/path_to/HighResol_primer/';
 list_scenes = dir([pathDir 'L5*L2W.nc']);
 
 for i=2
