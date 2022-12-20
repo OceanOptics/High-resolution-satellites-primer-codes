@@ -20,8 +20,8 @@ clear all; close all; clc
 
 
 %seaswir dataset:
-Lw = table2array(import_data("/Users/julianatavora/Documents/convolvi_github/datasets/SeaSWIR_TRIOS_Lw.tab", [239, Inf]));
-Ed = table2array(import_data("/Users/julianatavora/Documents/convolvi_github/datasets/SeaSWIR_TRIOS_Ed.tab", [239, Inf]));
+Lw = table2array(import_data("/path_to_/datasets/SeaSWIR_TRIOS_Lw.tab", [239, Inf]));
+Ed = table2array(import_data("/path_to_/datasets/SeaSWIR_TRIOS_Ed.tab", [239, Inf]));
 nm = 350:2.5:900;
 
 Lw = [nm; Lw]'; 
