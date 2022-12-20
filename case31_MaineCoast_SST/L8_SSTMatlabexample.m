@@ -21,7 +21,7 @@ clear variables
 % navigate to it in the current folder window on the left
 
 % Run the function
-pathDir = '/Volumes/PHD_files/HighResol_primer/GEE_SST/LC08_L2SP_011030_20220909_20220914_02_T1/';
+pathDir = 'path_to/GEE_SST/LC08_L2SP_011030_20220909_20220914_02_T1/';
 
     % Run the function
     [dt, lat, lon, temperature, fmask] = getLandsatL2_SST(pathDir, false, [0 99]);
