@@ -8,7 +8,7 @@
 %   You need:
 %  1. Landsat 8 scene (USGS, level 2 collection 2)                        %
 %  2. code 'getLandsatL2_RW.m'
-%  3. the MW algorithm package 
+%  3. the MW algorithm package: https://github.com/OceanOptics/MW_algorithm_satellite
 %  4. in-situ data 'in-situ_data_svaalbard.mat' available in the root folder
 
 % --                                                                      %
