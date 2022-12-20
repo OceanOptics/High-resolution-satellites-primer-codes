@@ -30,8 +30,6 @@ clc
 %                     process in-situ Turibidity data                     %
 %-------------------------------------------------------------------------%
 
-cd '/Volumes/PHD_files/HighResol_primer/LP/Turbidity_SIMCOSTA/'%set directory where in-situ Turbidity and import function are
-
 list_files = dir(['SIMCOSTA*.csv']);  % get list of all .csv turbidity files in directory
 x = size(list_files);
 
@@ -72,7 +70,7 @@ end
 
 
 % directory structure pointing to where images are located
-mainDir = '/Volumes/JTavora_ITC/PatosLagoon/';
+mainDir = '/PatosLagoon/';
 
 
 %mainDir = pathDir;
