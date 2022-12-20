@@ -7,7 +7,7 @@
 %                   --------------------------------                      %
 %   You need:
 %  1. Landsat 8 scene (acolite processed, level 2 collection 2)           %
-%  2. the MW algorithm package 
+%  2. the MW algorithm package: https://github.com/OceanOptics/MW_algorithm_satellite
 %  3. in-situ data 'in-situ_data_svaalbard.mat' available in the root folder
 
 % --                                                                      %
