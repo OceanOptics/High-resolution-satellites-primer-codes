@@ -51,7 +51,7 @@ wavelengths = [655 865 1609];
 
 %-------------------------------------------------------------------------%
 
-pathDir = '/Users/julianatavora/Documents/HighResol_primer/svalbard/acolite_l2c2/';
+pathDir = 'pathto/svalbard/acolite_l2c2/';
 list_scenes = dir([pathDir '*.nc']);
 
 
