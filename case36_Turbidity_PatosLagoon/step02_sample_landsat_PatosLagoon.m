@@ -37,7 +37,7 @@ clc
 %                     process in-situ Turibidity data                     %
 %-------------------------------------------------------------------------%
 
-cd '/Volumes/PHD_files/HighResol_primer/LP/Turbidity_SIMCOSTA/'%set directory where in-situ Turbidity and import function are
+cd 'path_to/Turbidity_SIMCOSTA/'%set directory where in-situ Turbidity and import function are
 
 % getting RS4 (buoy 4 only) 
 list_files = dir(['SIMCOSTA_RS-4*.csv']);  % get list of all .csv turbidity files in directory
@@ -72,7 +72,7 @@ save('Turb_Buoy4.mat','Turb_buoy4')
 %-------------------------------------------------------------------------%
 
 %  directory structure pointing to where images are located
-mainDir = '/Volumes/JTavora_ITC/PatosLagoon/';
+mainDir = '/path_to/';
 list_scenes = dir([mainDir 'L*_L2W.nc']);  % get list of all .nc files
 
 
