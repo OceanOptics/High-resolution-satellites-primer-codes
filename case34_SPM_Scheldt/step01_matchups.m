@@ -23,13 +23,11 @@ close all
 clear all
 clc
 
-cd '/Volumes/PHD_files/HighResol_primer/scheldt/'
 
 %-------------------------------------------------------------------------%
 %                        process in-situ SPM data                         %
 %-------------------------------------------------------------------------%
 
-cd '/Volumes/PHD_files/HighResol_primer/scheldt/SPM_RWS/';
 files = dir('*.txt');
 
 fileName = char({files(1).name});
@@ -43,7 +41,7 @@ weschelde_station = string(unique(SPMfield.Stations));
 %-------------------------------------------------------------------------%
 
 % directory structure pointing to where images are located
-pathDir = '/Volumes/Expansion/Satellite_imagery/Scheldt/ACOLITE/Sentinel2/level2/';
+pathDir = 'pathto/ACOLITE/Sentinel2/level2/';
 list_scenes = dir([pathDir 'S2*L2W.nc']);
 
 
