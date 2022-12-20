@@ -25,7 +25,7 @@ clc
 
 
 % ---------------------          read nc file         --------------------%
-pathDir = '/Users/julianatavora/Documents/HighResol_primer/binbin_figures/figure4a/';
+pathDir = 'path_to/';
 list_scenes = dir([pathDir '*.nc']);
 fileName = char({list_scenes(1).name});
 imageFile = [pathDir fileName];
