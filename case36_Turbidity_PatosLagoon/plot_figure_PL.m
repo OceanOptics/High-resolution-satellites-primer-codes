@@ -49,6 +49,9 @@ load('Landsat_matchups.mat')
 %
 %-------------------------------------------------------------------------%
 
+stations = unique(big_table_matchup_l8l9.boias);
+
+
 [xData, yData] = prepareCurveData(big_table_matchup_l8l9.Avg_Turb,big_table_matchup_l8l9.Turb_Nechad16_865_median);
 idx = ismember(big_table_matchup_l8l9.boias,stations(2));
 
@@ -98,7 +101,7 @@ RMSD(4)               = sqrt(nansum((T_corrected  - big_table_matchup_l8l9.Avg_T
 
 
 %  type 2 regression
-[m,b,~,~,~]  = lsqbisec(big_table_matchup_l8l9.Avg_Turb(idx),(0.0993.*(big_table_matchup_l8l9.Turb_Nechad16_865_median(idx)).^(1.354)));
+[m,b,~,~,~]  = lsqbisec(big_table_matchup_l8l9.Avg_Turb(~idx),(0.0993.*(big_table_matchup_l8l9.Turb_Nechad16_865_median(~idx)).^(1.354)));
 latlot       = linspace(0.001,400,500);
 lonlot       = m.*latlot + b;
 
