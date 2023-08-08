@@ -11,7 +11,7 @@ make auxdata all
 
 make
 
-python ./runPolymer.py 
+python ./sentinelrun.py 
 
 
 
